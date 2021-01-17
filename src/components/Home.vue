@@ -1,20 +1,12 @@
 <template>
 <div class="home_background">
-  <br>
-  <div>
-    <b-row>
-      <b-col sm="1" md="auto">
-        <div>
-          <img id="logo" src="@/assets/images/RadarLogo.png" /> 
-        </div>
-      </b-col>
-    </b-row>
-    <br>
-  </div>
-  <br>
-  <div id="atention_box">
+   <img id="logo" src="@/assets/images/RadarLogo.png" /> 
+   <br>
+  <!-- <div id="atention_box">
     <h4>*ATENÇÂO: Este site foi criado com o intuito de reunir informações para ajudar os moradores da cidade de Manaus durante a pandemia do covid-19.</h4>
-  </div>
+  </div> -->
+      <b-alert show variant="secondary" style="margin-left: 2em; margin-right: 2em;"><a>*ATENÇÂO: Este site foi criado com o intuito de reunir informações para ajudar os moradores da cidade de Manaus durante a pandemia do covid-19.</a></b-alert>
+
   <br>
   <div>
     <b-col>
