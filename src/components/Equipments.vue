@@ -3,7 +3,7 @@
    <nav>
 
         <v-app-bar text app>          
-           <img style="width:170px" src="@/assets/images/RadarLogo.png" /> 
+           <img style="width:170px" src="@/assets/images/RadarLogo.png" @click="$router.push('/')"/> 
 
         </v-app-bar>
         
