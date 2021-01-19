@@ -1,15 +1,17 @@
-.center_button {
-    margin-top: 5em;
+.drop-list {
+    background-color: #66B9BF;
+    color: white;
+    font-weight: bold;
 }
 
 .buttons {
-    margin-left: 37px;
+    margin-left: 23px;
     margin-top: 1em;
     height: 3em;
-    background-color: #38B6FF;
+    background-color: #07889B;
     color: white;
     font-weight: bold;
-    width: 170px;
+    width: 160px;
     border: #38B6FF;
 }
 

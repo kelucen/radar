@@ -1,15 +1,11 @@
 <template>
 <div class="home_background">
-   <img id="logo" src="@/assets/images/RadarLogo.png" /> 
+   <h1 style="color:#E37222; font-weight:bold" @click="$router.push('/')">RADAR</h1>
    <br>
-      <b-alert show variant="secondary" style="margin-left: 2em; margin-right: 2em;"><a style=" margin-left: 5em">*ATENÇÂO: Este site foi criado com o intuito de reunir informações para ajudar os moradores da cidade de Manaus durante a pandemia do covid-19.</a></b-alert>
+      <b-alert show variant="info" style="margin-left: 2em; margin-right: 2em;"><a style=" margin-left: 1em">*ATENÇÂO: Este site foi criado com o intuito de reunir informações para ajudar os moradores da cidade de Manaus durante a pandemia do covid-19.</a></b-alert>
   <br>
   <div class="center_button">
-    <b-col>
-      <!-- <button id="home_button">Oxigênio</button> -->
-      <button id="home_button" @click="$router.push('/equipamentos')">Equipamentos Hospitalares</button>
-      <!-- <button id="home_button">Doação</button> -->
-    </b-col>
+      <b-button id="home_button" @click="$router.push('/equipamentos')">Equipamentos Hospitalares</b-button>
   </div>
 
 </div>

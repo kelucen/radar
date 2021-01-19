@@ -1,42 +1,31 @@
 <template>
 <div>
-   <nav>
-
-        <v-app-bar text app>          
-           <img style="width:170px" src="@/assets/images/RadarLogo.png" @click="$router.push('/')"/> 
-
-        </v-app-bar>
-        
-     </nav>
-    <div class="center_button">
-        <b-button @click="setType('Aparelhos')" class="buttons" >Aparelhos</b-button>
-        <b-button @click="setType('Equipamentos')" class="buttons">Equipamentos</b-button>
-        <b-button @click="setType('EPI')" class="buttons">EPI</b-button>
-        <b-button @click="setType('Limpeza')" class="buttons">Limpeza</b-button>
-        <b-button @click="setType('Higiene Pessoal')" class="buttons">Higiene Pessoal</b-button>
+    <div style="margin-top:5em">
+        <b-form-select v-model="filterSelectedItem" :options="ZoneOptions" class="drop-list"></b-form-select>
+        <b-form-select v-model="sortSelectedItem" :options="SortOptions" style="margin-top:1em" class="drop-list"></b-form-select>
     </div>
-    <div>
+     <div style="margin-top: 2em">
         <b-row>
-            <h4 class="filter">Filtros:</h4>
-            <b-dropdown class="filter-dropdown" :text="filterSelectedItem"  variant="primary">
-                <b-dropdown-item @click="setZone('Zona Norte')">Zona Norte</b-dropdown-item>
-                <b-dropdown-item @click="setZone('Zona Leste')">Zona Leste</b-dropdown-item>
-                <b-dropdown-item @click="setZone('Zona Sul')">Zona Sul</b-dropdown-item>
-                <b-dropdown-item @click="setZone('Zona Oeste')">Zona Oeste</b-dropdown-item>
-                <b-dropdown-item @click="setZone('Zona Centro-Sul')">Zona Centro-Sul</b-dropdown-item>
-                <b-dropdown-item @click="setZone('Zona Centro-Oeste')">Zona Centro-Oeste</b-dropdown-item>
-            </b-dropdown>
-            <h4 class="filter">Ordenar por:</h4>
-             <b-dropdown class="filter-dropdown" :text="sortSelectedItem"  variant="primary">
-                <b-dropdown-item @click="sortSelectedItem='Ordem alfabética'">Ordem alfabética</b-dropdown-item>
-            </b-dropdown>   
+            <b-button @click="setType('CilindroEO2')" class="buttons">Cilindro e O2</b-button>
+            <b-button @click="setType('Aparelhos')" class="buttons" >Aparelhos</b-button> </b-row>
+        <b-row>
+            <b-button @click="setType('Equipamentos')" class="buttons">Equipamentos</b-button>
+            <b-button @click="setType('EPI')" class="buttons">EPI</b-button>
+        </b-row>
+        <b-row>
+            <b-button @click="setType('Limpeza')" class="buttons">Limpeza</b-button>
+            <b-button @click="setType('Higiene Pessoal')" class="buttons">Higiene Pessoal</b-button>
         </b-row>
     </div>
     <br>
     <br>
-    <div  v-for="(item,i) in itemsList" :key="item.nome">
+    <div  v-for="(item,i) in itemsList" :key="item.name">
         <b-card v-if="show" class="card">
             <h3 style="font-weight:bold">{{item.name}}</h3>
+             <b-row>
+                <div style="font-weight:bold; margin-left:15px">Descrição:</div>
+                <div style="margin-left:2px">{{item.description}}</div>
+            </b-row>
             <b-button  class="expand-icon"  v-if="item.icon" @click="changeIconvalue(i,false)">
                 <v-icon style="color:white;">expand_more</v-icon>
             </b-button> 
@@ -74,13 +63,27 @@ export default {
   name: 'Equipments',
   data(){
     return{
-        filterSelectedItem: "Zonas",
-        sortSelectedItem: "Ordem alfabética",
+        filterSelectedItem: null,
+        sortSelectedItem: null,
         typeSelected:'',
         itemsList: [],
         show: true, 
         companyList:[],
-        listTemp:[]   
+        listTemp:[],
+        ZoneOptions: [
+          { value: null, text: 'Zonas' },
+          { value: 'Zona Norte', text: 'Zona Norte' },
+          { value: 'Zona Leste', text: 'Zona Leste' },
+          { value: 'Zona Sul', text: 'Zona Sul' },
+          { value: 'Zona Oeste', text: 'Zona Oeste' },
+          { value: 'Zona Centro-Sul', text: 'Zona Centro-Sul' },
+          { value: 'Zona Centro-Oeste', text: 'Zona Centro-Oeste' }
+        ],
+        SortOptions:[
+          { value: null, text: 'Ordenar por' },
+          { value: 'Ordem alfabética', text: 'Ordem alfabética' },
+        ],
+        urlFilter:''
     }
     
  
@@ -96,7 +99,7 @@ export default {
                 this.itemsList = []
                 this.companyList = []
                 for(let i in this.listTemp){
-                    this.itemsList.push({name: this.listTemp[i].name, icon:true})
+                    this.itemsList.push({name: this.listTemp[i].name, icon:true, description:this.listTemp[i].description})
                     for(let j in this.listTemp[i].companies){
                         this.companyList.push({name: this.listTemp[i].companies[j].name, price:this.listTemp[i].companies[j].pivot.price, 
                         address: this.listTemp[i].companies[j].address, phone: this.listTemp[i].companies[j].phone1, instagram:this.listTemp[i].companies[j].instagram})
@@ -108,19 +111,10 @@ export default {
         },
         setType(type){
             this.typeSelected = type
-            this.filterSelectedItem = 'Zonas'
-            axios.get('https://radar-backend00.herokuapp.com/products?type='+this.typeSelected)
+            this.urlFilter = this.filterSelectedItem ? this.typeSelected + '&zone=' + this.filterSelectedItem : this.typeSelected
+            axios.get('https://radar-backend00.herokuapp.com/products?type='+this.urlFilter)
             .then(response => {
-                console.log(response.data)
-                this.itemsList = response.data
-                this.showItemsList()
-            })
-        },
-        setZone(zone){
-            this.filterSelectedItem = zone
-             axios.get('https://radar-backend00.herokuapp.com/products?type='+this.typeSelected+'&zone='+this.filterSelectedItem)
-            .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.itemsList = response.data
                 this.showItemsList()
             })
@@ -129,12 +123,6 @@ export default {
             this.itemsList[id].icon = valeu
         }
   },
-  mounted(){
-    // axios.get('http://radar-backend00.herokuapp.com/companies')
-    // .then(response => {
-    //   console.log(response.data)
-    // })
-  }
 }
 </script>
 
