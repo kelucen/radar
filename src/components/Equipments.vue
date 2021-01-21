@@ -2,9 +2,9 @@
 <div>
     <div style="margin-top:5em">
         <b-form-select v-model="filterSelectedItem" :options="ZoneOptions" class="drop-list"></b-form-select>
-        <b-form-select v-model="sortSelectedItem" :options="SortOptions" style="margin-top:1em" class="drop-list"></b-form-select>
+        <!-- <b-form-select v-model="sortSelectedItem" :options="SortOptions" style="margin-top:1em" class="drop-list"></b-form-select> -->
     </div>
-     <div style="margin-top: 2em">
+     <div v-if="filterSelectedItem!=null" style="margin-top: 2em">
         <b-row>
             <b-button @click="setType('CilindroEO2')" class="buttons">Cilindro e O2</b-button>
             <b-button @click="setType('Aparelhos')" class="buttons" >Aparelhos</b-button> </b-row>
@@ -71,7 +71,7 @@ export default {
         companyList:[],
         listTemp:[],
         ZoneOptions: [
-          { value: null, text: 'Zonas' },
+          { value: null, text: 'Filtrar por zonas' },
           { value: 'Zona Norte', text: 'Zona Norte' },
           { value: 'Zona Leste', text: 'Zona Leste' },
           { value: 'Zona Sul', text: 'Zona Sul' },
@@ -110,6 +110,7 @@ export default {
             }
         },
         setType(type){
+            this.show = true
             this.typeSelected = type
             this.urlFilter = this.filterSelectedItem ? this.typeSelected + '&zone=' + this.filterSelectedItem : this.typeSelected
             axios.get('https://radar-backend00.herokuapp.com/products?type='+this.urlFilter)
