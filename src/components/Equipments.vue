@@ -4,7 +4,7 @@
         <b-form-select v-model="filterSelectedItem" :options="ZoneOptions" class="drop-list"></b-form-select>
         <!-- <b-form-select v-model="sortSelectedItem" :options="SortOptions" style="margin-top:1em" class="drop-list"></b-form-select> -->
     </div>
-     <div v-if="filterSelectedItem!=null" style="margin-top: 2em">
+     <div style="margin-top: 2em">
         <b-row>
             <b-button @click="setType('CilindroEO2')" class="buttons">Cilindro e O2</b-button>
             <b-button @click="setType('Aparelhos')" class="buttons" >Aparelhos</b-button> </b-row>
@@ -32,7 +32,7 @@
             <div v-else>
                 <v-icon class="expand-icon" @click="changeIconvalue(i,true)">expand_less</v-icon>
                 <h5 class="title-local">Locais onde se pode encontrar: </h5>
-                    <ul v-for="company in companyList" :key="company.price">
+                    <ul v-for="company in itemsList[i].companies" :key="company.price">
                       <li style="font-weight:bold">R$ {{parseFloat(company.price).toFixed(2)}}</li>
                       <b-row>
                           <div style="font-weight:bold; margin-left:15px">{{company.name}},</div>
@@ -72,6 +72,7 @@ export default {
         listTemp:[],
         ZoneOptions: [
           { value: null, text: 'Filtrar por zonas' },
+          { value: null, text: 'Todas as zonas' },
           { value: 'Zona Norte', text: 'Zona Norte' },
           { value: 'Zona Leste', text: 'Zona Leste' },
           { value: 'Zona Sul', text: 'Zona Sul' },
@@ -97,11 +98,10 @@ export default {
             else{
                 this.listTemp  = this.itemsList
                 this.itemsList = []
-                this.companyList = []
                 for(let i in this.listTemp){
-                    this.itemsList.push({name: this.listTemp[i].name, icon:true, description:this.listTemp[i].description})
+                    this.itemsList.push({name: this.listTemp[i].name, icon:true, description:this.listTemp[i].description,companies:[]})
                     for(let j in this.listTemp[i].companies){
-                        this.companyList.push({name: this.listTemp[i].companies[j].name, price:this.listTemp[i].companies[j].pivot.price, 
+                        this.itemsList[i].companies[j]=({name: this.listTemp[i].companies[j].name, price:this.listTemp[i].companies[j].pivot.price, 
                         address: this.listTemp[i].companies[j].address, phone: this.listTemp[i].companies[j].phone1, instagram:this.listTemp[i].companies[j].instagram})
                     }
                    

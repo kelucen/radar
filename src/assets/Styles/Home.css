@@ -22,8 +22,19 @@
 }
 
 #logo {
+    margin-top: 5em;
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+#logoApp {
+    width: 140px;
+}
+
+.footer_home {
+    background-color: #E37222;
+    height: 220px;
+    margin-top: 4em;
 }
